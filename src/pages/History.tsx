@@ -11,6 +11,7 @@ import { ptBR } from 'date-fns/locale';
 export const History = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activityFilter, setActivityFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [periodFilter, setPeriodFilter] = useState('all');
 
   // Mock data - in a real app this would come from API
@@ -21,6 +22,14 @@ export const History = () => {
     { id: '4', name: 'Projeto Backend API' },
   ];
 
+  const statusConfig = {
+    'feito': { label: 'Feito', color: 'bg-green-100 text-green-700 border-green-200' },
+    'em-andamento': { label: 'Em Andamento', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+    'impedimento': { label: 'Impedimento', color: 'bg-red-100 text-red-700 border-red-200' },
+    'estudando': { label: 'Estudando', color: 'bg-purple-100 text-purple-700 border-purple-200' },
+    'pausado': { label: 'Pausado', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
+  };
+
   const workLogs = [
     {
       id: 1,
@@ -29,7 +38,8 @@ export const History = () => {
       hours: 3.5,
       description: 'Implementação dos componentes principais da dashboard',
       nextStep: 'Integrar com API backend',
-      activityId: '1'
+      activityId: '1',
+      status: 'em-andamento' as keyof typeof statusConfig
     },
     {
       id: 2,
@@ -38,7 +48,8 @@ export const History = () => {
       hours: 1.0,
       description: 'Alinhamento sobre requisitos do projeto',
       nextStep: 'Preparar protótipo das telas',
-      activityId: '2'
+      activityId: '2',
+      status: 'feito' as keyof typeof statusConfig
     },
     {
       id: 3,
@@ -47,7 +58,8 @@ export const History = () => {
       hours: 2.5,
       description: 'Estudo de React Query e gerenciamento de estado',
       nextStep: 'Aplicar conhecimentos no projeto atual',
-      activityId: '3'
+      activityId: '3',
+      status: 'estudando' as keyof typeof statusConfig
     },
     {
       id: 4,
@@ -56,7 +68,8 @@ export const History = () => {
       hours: 4.0,
       description: 'Desenvolvimento das rotas de autenticação',
       nextStep: 'Implementar middleware de autorização',
-      activityId: '4'
+      activityId: '4',
+      status: 'impedimento' as keyof typeof statusConfig
     },
     {
       id: 5,
@@ -65,7 +78,8 @@ export const History = () => {
       hours: 6.0,
       description: 'Setup inicial do projeto e configuração do ambiente',
       nextStep: 'Criar estrutura de componentes',
-      activityId: '1'
+      activityId: '1',
+      status: 'feito' as keyof typeof statusConfig
     },
   ];
 
@@ -74,8 +88,9 @@ export const History = () => {
     const matchesSearch = log.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          log.activity.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesActivity = activityFilter === 'all' || log.activityId === activityFilter;
+    const matchesStatus = statusFilter === 'all' || log.status === statusFilter;
     // For simplicity, not implementing period filter logic here
-    return matchesSearch && matchesActivity;
+    return matchesSearch && matchesActivity && matchesStatus;
   });
 
   const groupedLogs = filteredLogs.reduce((groups, log) => {
@@ -101,7 +116,7 @@ export const History = () => {
 
       {/* Filters */}
       <Card className="p-4 bg-gradient-card shadow-card border-0">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Search */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Buscar</label>
@@ -128,6 +143,24 @@ export const History = () => {
                 {activities.map((activity) => (
                   <SelectItem key={activity.id} value={activity.id}>
                     {activity.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Status Filter */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Status</label>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="bg-background border-border">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os status</SelectItem>
+                {Object.entries(statusConfig).map(([key, config]) => (
+                  <SelectItem key={key} value={key}>
+                    {config.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -202,6 +235,9 @@ export const History = () => {
                           </div>
                         </div>
                       </div>
+                      <Badge className={statusConfig[log.status].color}>
+                        {statusConfig[log.status].label}
+                      </Badge>
                     </div>
 
                     {/* Description */}

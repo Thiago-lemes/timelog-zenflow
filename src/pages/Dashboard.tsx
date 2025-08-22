@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Plus, Calendar, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { DashboardFilters } from '@/components/filters/DashboardFilters';
-import { WeeklyChart } from '@/components/charts/WeeklyChart';
+import { AdvancedChart } from '@/components/charts/AdvancedChart';
 import { ActivityStatus } from '@/components/forms/ActivityForm';
 
 const statusConfig = {
@@ -100,8 +100,8 @@ export const Dashboard = () => {
         </Card>
       </div>
 
-      {/* Weekly Chart */}
-      <WeeklyChart />
+      {/* Advanced Chart */}
+      <AdvancedChart />
 
       {/* Filters */}
       <DashboardFilters 
