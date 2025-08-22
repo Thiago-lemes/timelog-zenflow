@@ -97,7 +97,7 @@ export const Dashboard = () => {
               <p className="text-2xl font-bold">{monthHours}h</p>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Weekly Chart */}
