@@ -7,6 +7,8 @@ import { History } from "@/pages/History";
 import NotFound from "@/pages/NotFound";
 
 export const AppRouter = () => {
+  console.log('AppRouter is rendering');
+  
   return (
     <Layout>
       <Routes>

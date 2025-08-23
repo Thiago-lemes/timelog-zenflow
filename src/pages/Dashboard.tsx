@@ -18,6 +18,7 @@ const statusConfig = {
 };
 
 export const Dashboard = () => {
+  console.log('Dashboard is rendering');
   const [selectedStatus, setSelectedStatus] = useState<ActivityStatus | 'todos'>('todos');
   
   // Mock data - in a real app this would come from state management or API
