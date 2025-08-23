@@ -8,16 +8,62 @@ import { Slider } from '@/components/ui/slider';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Save, Calendar as CalendarIcon, Clock } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
 export const Register = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [hours, setHours] = useState([2]);
+  const [startTime, setStartTime] = useState('09:00');
+  const [endTime, setEndTime] = useState('11:00');
   const [activity, setActivity] = useState('');
   const [description, setDescription] = useState('');
   const [nextStep, setNextStep] = useState('');
+  
+  // Função para calcular horas trabalhadas
+  const calculateHoursWorked = (start: string, end: string): number => {
+    if (!start || !end) return 0;
+    
+    const [startHour, startMin] = start.split(':').map(Number);
+    const [endHour, endMin] = end.split(':').map(Number);
+    
+    const startInMinutes = startHour * 60 + startMin;
+    let endInMinutes = endHour * 60 + endMin;
+    
+    // Se o horário de fim for menor que o de início, assume que é no dia seguinte
+    if (endInMinutes <= startInMinutes) {
+      endInMinutes += 24 * 60;
+    }
+    
+    const diffInMinutes = endInMinutes - startInMinutes;
+    return Math.round((diffInMinutes / 60) * 2) / 2; // Arredonda para 0.5
+  };
+  
+  // Atualiza as horas quando os horários mudam
+  useEffect(() => {
+    const calculatedHours = calculateHoursWorked(startTime, endTime);
+    if (calculatedHours > 0 && calculatedHours <= 12) {
+      setHours([calculatedHours]);
+    }
+  }, [startTime, endTime]);
+  
+  // Atualiza o horário de fim quando o slider muda
+  const handleHoursChange = (newHours: number[]) => {
+    setHours(newHours);
+    
+    if (startTime) {
+      const [startHour, startMin] = startTime.split(':').map(Number);
+      const startInMinutes = startHour * 60 + startMin;
+      const endInMinutes = startInMinutes + (newHours[0] * 60);
+      
+      const endHour = Math.floor(endInMinutes / 60) % 24;
+      const endMin = endInMinutes % 60;
+      
+      const newEndTime = `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`;
+      setEndTime(newEndTime);
+    }
+  };
 
   // Mock activities
   const activities = [
@@ -111,7 +157,7 @@ export const Register = () => {
             </div>
             <Slider
               value={hours}
-              onValueChange={setHours}
+              onValueChange={handleHoursChange}
               max={12}
               min={0.5}
               step={0.5}
@@ -133,7 +179,8 @@ export const Register = () => {
                 id="start-time"
                 type="time" 
                 className="bg-background border-border"
-                defaultValue="09:00"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -144,7 +191,8 @@ export const Register = () => {
                 id="end-time"
                 type="time" 
                 className="bg-background border-border"
-                defaultValue="17:00"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
               />
             </div>
           </div>
