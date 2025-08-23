@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, FolderOpen, Clock, History } from 'lucide-react';
+import { LayoutDashboard, FolderOpen, Clock, History, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -7,6 +7,7 @@ const navItems = [
   { to: '/activities', label: 'Atividades', icon: FolderOpen },
   { to: '/register', label: 'Registrar', icon: Clock },
   { to: '/history', label: 'Histórico', icon: History },
+  { to: '/settings', label: 'Configurações', icon: Settings },
 ];
 
 export const Navigation = () => {

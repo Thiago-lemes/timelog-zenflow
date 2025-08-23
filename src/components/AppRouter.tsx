@@ -5,6 +5,7 @@ import { Activities } from "@/pages/Activities";
 import { Register } from "@/pages/Register";
 import { History } from "@/pages/History";
 import { Login } from "@/pages/Login";
+import { Settings } from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 
 export const AppRouter = () => {
@@ -18,6 +19,7 @@ export const AppRouter = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/history" element={<History />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/settings" element={<Settings />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
