@@ -183,7 +183,7 @@ export const AdvancedChart = () => {
         </CardTitle>
         
         {/* Controls */}
-        <div className="flex flex-wrap gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2">
           {/* Period Selector */}
           <Select value={period} onValueChange={(value: PeriodType) => setPeriod(value)}>
             <SelectTrigger className="w-32">
@@ -246,7 +246,7 @@ export const AdvancedChart = () => {
       </CardHeader>
       
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[300px]">
+        <ChartContainer config={chartConfig} className="h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             {renderChart()}
           </ResponsiveContainer>
