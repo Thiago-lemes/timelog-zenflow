@@ -23,36 +23,38 @@ export const DashboardFilters = ({ selectedStatus, onStatusChange, onClearFilter
   const hasActiveFilters = selectedStatus !== 'todos';
 
   return (
-    <div className="flex items-center gap-4 p-4 bg-gradient-card rounded-lg shadow-card border-0">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-card rounded-lg shadow-card border-0">
       <div className="flex items-center gap-2">
         <Filter className="h-4 w-4 text-muted-foreground" />
         <span className="text-sm font-medium">Filtros:</span>
       </div>
       
-      <Select value={selectedStatus} onValueChange={onStatusChange}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Status" />
-        </SelectTrigger>
-        <SelectContent>
-          {statusOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              <span className={option.color}>{option.label}</span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+        <Select value={selectedStatus} onValueChange={onStatusChange}>
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            {statusOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                <span className={option.color}>{option.label}</span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-      {hasActiveFilters && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onClearFilters}
-          className="h-8"
-        >
-          <X className="h-3 w-3 mr-1" />
-          Limpar
-        </Button>
-      )}
+        {hasActiveFilters && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onClearFilters}
+            className="h-8 w-full sm:w-auto"
+          >
+            <X className="h-3 w-3 mr-1" />
+            Limpar
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

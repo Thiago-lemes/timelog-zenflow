@@ -6,22 +6,22 @@ import { Plus, Target, Calendar, DollarSign, TrendingUp } from 'lucide-react';
 
 export const Goals = () => {
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
             Metas Financeiras
           </h1>
-          <p className="text-muted-foreground">Defina e acompanhe suas metas de economia</p>
+          <p className="text-sm sm:text-base text-muted-foreground">Defina e acompanhe suas metas de economia</p>
         </div>
-        <Button className="bg-gradient-primary hover:opacity-90">
+        <Button className="bg-gradient-primary hover:opacity-90 w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-2" />
           Nova Meta
         </Button>
       </div>
 
       {/* Resumo das metas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         <Card className="bg-gradient-card shadow-card border-0">
           <CardContent className="p-6">
             <div className="flex items-center gap-2">

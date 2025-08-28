@@ -48,44 +48,33 @@ export const CashFlow = () => {
     return transactions.filter(t => t.type === filterType);
   }, [transactions, filterType]);
 
-  const { totalIncome, totalExpenses, balance } = useMemo(() => {
-    const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-    const expenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+  const { totalIncome, totalExpense, balance } = useMemo(() => {
+    const income = transactions
+      .filter(t => t.type === 'income')
+      .reduce((acc, t) => acc + t.amount, 0);
+    
+    const expense = transactions
+      .filter(t => t.type === 'expense')
+      .reduce((acc, t) => acc + t.amount, 0);
+    
     return {
       totalIncome: income,
-      totalExpenses: expenses,
-      balance: income - expenses
+      totalExpense: expense,
+      balance: income - expense
     };
   }, [transactions]);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value);
-  };
-
-  const formatDate = (date: string, time: string) => {
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    
-    if (date === today) return `Hoje, ${time}`;
-    if (date === yesterday) return `Ontem, ${time}`;
-    
-    return new Date(date).toLocaleDateString('pt-BR') + `, ${time}`;
-  };
-
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
             Fluxo de Caixa
           </h1>
-          <p className="text-muted-foreground">Gerencie suas finanças, metas e orçamento</p>
+          <p className="text-sm sm:text-base text-muted-foreground">Controle suas receitas e despesas</p>
         </div>
         <TransactionForm onAddTransaction={handleAddTransaction}>
-          <Button className="bg-gradient-primary hover:opacity-90">
+          <Button className="bg-gradient-primary hover:opacity-90 w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Nova Transação
           </Button>
@@ -93,130 +82,133 @@ export const CashFlow = () => {
       </div>
 
       {/* Cards de resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         <Card className="bg-gradient-card shadow-card border-0">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Receitas</CardTitle>
-            <TrendingUp className="h-4 w-4 text-success" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-success">
-              +{formatCurrency(totalIncome)}
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-success" />
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Receitas</p>
+                <p className="text-lg sm:text-2xl font-bold text-success">R$ {totalIncome.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Total acumulado</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-card shadow-card border-0">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Despesas</CardTitle>
-            <TrendingDown className="h-4 w-4 text-destructive" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">
-              -{formatCurrency(totalExpenses)}
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <TrendingDown className="h-6 w-6 sm:h-8 sm:w-8 text-destructive" />
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Despesas</p>
+                <p className="text-lg sm:text-2xl font-bold text-destructive">R$ {totalExpense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Total acumulado</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-card shadow-card border-0">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Saldo</CardTitle>
-            <DollarSign className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${balance >= 0 ? 'text-success' : 'text-destructive'}`}>
-              {formatCurrency(balance)}
+        <Card className="bg-gradient-card shadow-card border-0 sm:col-span-2 lg:col-span-1">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <DollarSign className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Saldo</p>
+                <p className={`text-lg sm:text-2xl font-bold ${balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                  R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Disponível</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Transações */}
+      {/* Filtros */}
+      <Card className="bg-gradient-card shadow-card border-0">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Filtrar por:</span>
+            </div>
+            <Select value={filterType} onValueChange={(value: 'all' | 'income' | 'expense') => setFilterType(value)}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas as transações</SelectItem>
+                <SelectItem value="income">Receitas</SelectItem>
+                <SelectItem value="expense">Despesas</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Lista de transações */}
       <Card className="bg-gradient-card shadow-card border-0">
         <CardHeader>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Transações ({filteredTransactions.length})
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4" />
-              <Select value={filterType} onValueChange={(value: 'all' | 'income' | 'expense') => setFilterType(value)}>
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas</SelectItem>
-                  <SelectItem value="income">Receitas</SelectItem>
-                  <SelectItem value="expense">Despesas</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span className="text-lg sm:text-xl">Transações Recentes</span>
+            <Badge variant="secondary" className="w-fit">
+              {filteredTransactions.length} transações
+            </Badge>
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {filteredTransactions.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                Nenhuma transação encontrada
-              </div>
-            ) : (
-              filteredTransactions.map((transaction) => (
-                <div key={transaction.id} className="flex items-center justify-between p-4 rounded-lg bg-primary/5 group hover:bg-primary/10 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-2 h-2 rounded-full ${transaction.type === 'income' ? 'bg-success' : 'bg-destructive'}`}></div>
-                    <div>
-                      <p className="font-medium">{transaction.description}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDate(transaction.date, transaction.time)} • {transaction.category}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right">
-                      <p className={`font-medium ${transaction.type === 'income' ? 'text-success' : 'text-destructive'}`}>
-                        {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
-                      </p>
-                      <Badge variant={transaction.type === 'income' ? 'secondary' : 'outline'} className="text-xs">
+        <CardContent className="p-3 sm:p-6">
+          {filteredTransactions.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Nenhuma transação encontrada</p>
+            </div>
+          ) : (
+            <div className="space-y-2 sm:space-y-3">
+              {filteredTransactions.map((transaction) => (
+                <div key={transaction.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
+                      <h3 className="font-medium text-sm sm:text-base truncate">{transaction.description}</h3>
+                      <Badge variant={transaction.type === 'income' ? 'default' : 'destructive'} className="w-fit text-xs">
                         {transaction.type === 'income' ? 'Receita' : 'Despesa'}
                       </Badge>
                     </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      {transaction.category} • {transaction.date} • {transaction.time}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between sm:justify-end gap-3">
+                    <p className={`font-bold text-base sm:text-lg ${transaction.type === 'income' ? 'text-success' : 'text-destructive'}`}>
+                      {transaction.type === 'income' ? '+' : '-'} R$ {transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDeleteTransaction(transaction.id)}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 p-0"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {transactions.length === 0 && (
-        <Card className="bg-muted/50 border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <DollarSign className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Comece a gerenciar suas finanças</h3>
-            <p className="text-muted-foreground text-center mb-4">
-              Adicione sua primeira transação para começar a acompanhar seu fluxo de caixa
-            </p>
-            <TransactionForm onAddTransaction={handleAddTransaction}>
-              <Button className="bg-gradient-primary hover:opacity-90">
-                <Plus className="h-4 w-4 mr-2" />
-                Adicionar Primeira Transação
-              </Button>
-            </TransactionForm>
-          </CardContent>
-        </Card>
-      )}
+      {/* Aviso sobre funcionalidade */}
+      <Card className="bg-warning/10 border-warning/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-warning-foreground">
+            <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
+            Funcionalidade Local
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-xs sm:text-sm text-warning-foreground">
+            Este sistema de fluxo de caixa está funcionando localmente. Para persistência de dados real e sincronização entre dispositivos, 
+            será necessário conectar ao Supabase futuramente.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -47,15 +47,15 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Visão geral das suas atividades</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Dashboard</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Visão geral das suas atividades</p>
         </div>
-        <Link to="/register">
-          <Button className="bg-gradient-primary hover:opacity-90 shadow-soft">
+        <Link to="/register" className="w-full sm:w-auto">
+          <Button className="bg-gradient-primary hover:opacity-90 shadow-soft w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Novo Registro
           </Button>
@@ -63,39 +63,39 @@ export const Dashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-6 bg-gradient-card shadow-card border-0">
-          <div className="flex items-center space-x-3">
-            <div className="bg-primary/10 p-3 rounded-xl">
-              <Clock className="h-6 w-6 text-primary" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <Card className="p-4 sm:p-6 bg-gradient-card shadow-card border-0">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="bg-primary/10 p-2 sm:p-3 rounded-xl">
+              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Hoje</p>
-              <p className="text-2xl font-bold">{todayHours}h</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Hoje</p>
+              <p className="text-xl sm:text-2xl font-bold">{todayHours}h</p>
             </div>
           </div>
         </Card>
 
-        <Card className="p-6 bg-gradient-card shadow-card border-0">
-          <div className="flex items-center space-x-3">
-            <div className="bg-primary/10 p-3 rounded-xl">
-              <Calendar className="h-6 w-6 text-primary" />
+        <Card className="p-4 sm:p-6 bg-gradient-card shadow-card border-0">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="bg-primary/10 p-2 sm:p-3 rounded-xl">
+              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Esta Semana</p>
-              <p className="text-2xl font-bold">{weekHours}h</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Esta Semana</p>
+              <p className="text-xl sm:text-2xl font-bold">{weekHours}h</p>
             </div>
           </div>
         </Card>
 
-        <Card className="p-6 bg-gradient-card shadow-card border-0">
-          <div className="flex items-center space-x-3">
-            <div className="bg-primary/10 p-3 rounded-xl">
-              <TrendingUp className="h-6 w-6 text-primary" />
+        <Card className="p-4 sm:p-6 bg-gradient-card shadow-card border-0">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="bg-primary/10 p-2 sm:p-3 rounded-xl">
+              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Este Mês</p>
-              <p className="text-2xl font-bold">{monthHours}h</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Este Mês</p>
+              <p className="text-xl sm:text-2xl font-bold">{monthHours}h</p>
             </div>
           </div>
         </Card>
@@ -112,18 +112,18 @@ export const Dashboard = () => {
       />
 
       {/* Recent Activities */}
-      <Card className="p-6 bg-gradient-card shadow-card border-0">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">
+      <Card className="p-4 sm:p-6 bg-gradient-card shadow-card border-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+          <h2 className="text-lg sm:text-xl font-semibold">
             Atividades Recentes
             {selectedStatus !== 'todos' && (
-              <span className="ml-2 text-sm text-muted-foreground">
+              <span className="ml-2 text-xs sm:text-sm text-muted-foreground">
                 ({filteredActivities.length} de {allActivities.length})
               </span>
             )}
           </h2>
-          <Link to="/history">
-            <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10">
+          <Link to="/history" className="w-full sm:w-auto">
+            <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10 w-full sm:w-auto">
               Ver todas
             </Button>
           </Link>
@@ -132,19 +132,19 @@ export const Dashboard = () => {
         <div className="space-y-3">
           {filteredActivities.length > 0 ? (
             filteredActivities.map((activity) => (
-              <div key={activity.id} className="flex items-center justify-between p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-medium">{activity.project}</h3>
-                    <Badge className={statusConfig[activity.status].color}>
+              <div key={activity.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                    <h3 className="font-medium truncate">{activity.project}</h3>
+                    <Badge className={statusConfig[activity.status].color + " text-xs"}>
                       {statusConfig[activity.status].label}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">{activity.task}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{activity.task}</p>
                 </div>
-                <div className="text-right">
-                  <p className="font-medium">{activity.hours}h</p>
-                  <p className="text-sm text-muted-foreground">{activity.time}</p>
+                <div className="text-right sm:text-right flex justify-between sm:block">
+                  <p className="font-medium text-sm sm:text-base">{activity.hours}h</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{activity.time}</p>
                 </div>
               </div>
             ))

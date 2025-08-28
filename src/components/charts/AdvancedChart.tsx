@@ -171,22 +171,22 @@ export const AdvancedChart = () => {
   return (
     <Card className="bg-gradient-card shadow-card border-0">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            <span>Métricas de Atividade - {periodLabels[period]}</span>
+            <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="text-sm sm:text-base">Métricas de Atividade - {periodLabels[period]}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <TrendingUp className="h-4 w-4" />
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+            <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>Média: {avgHours.toFixed(1)}h</span>
           </div>
         </CardTitle>
         
         {/* Controls */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 pt-2">
           {/* Period Selector */}
           <Select value={period} onValueChange={(value: PeriodType) => setPeriod(value)}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-full sm:w-32">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -199,7 +199,7 @@ export const AdvancedChart = () => {
 
           {/* View Type Selector */}
           <Select value={viewType} onValueChange={(value: ViewType) => setViewType(value)}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -209,12 +209,12 @@ export const AdvancedChart = () => {
           </Select>
 
           {/* Chart Type Buttons */}
-          <div className="flex gap-1">
+          <div className="flex gap-1 justify-center sm:justify-start">
             <Button
               variant={chartType === 'bar' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setChartType('bar')}
-              className="px-3"
+              className="px-3 flex-1 sm:flex-none"
             >
               <BarChart3 className="h-4 w-4" />
             </Button>
@@ -222,7 +222,7 @@ export const AdvancedChart = () => {
               variant={chartType === 'line' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setChartType('line')}
-              className="px-3"
+              className="px-3 flex-1 sm:flex-none"
             >
               <LineChartIcon className="h-4 w-4" />
             </Button>
@@ -253,22 +253,22 @@ export const AdvancedChart = () => {
         </ChartContainer>
         
         {/* Summary Stats */}
-        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center p-3 rounded-lg bg-primary/5">
-            <p className="text-sm text-muted-foreground">Total</p>
-            <p className="text-xl font-bold">{totalHours.toFixed(1)}h</p>
+        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="text-center p-2 sm:p-3 rounded-lg bg-primary/5">
+            <p className="text-xs sm:text-sm text-muted-foreground">Total</p>
+            <p className="text-lg sm:text-xl font-bold">{totalHours.toFixed(1)}h</p>
           </div>
-          <div className="text-center p-3 rounded-lg bg-primary/5">
-            <p className="text-sm text-muted-foreground">Média</p>
-            <p className="text-xl font-bold">{avgHours.toFixed(1)}h</p>
+          <div className="text-center p-2 sm:p-3 rounded-lg bg-primary/5">
+            <p className="text-xs sm:text-sm text-muted-foreground">Média</p>
+            <p className="text-lg sm:text-xl font-bold">{avgHours.toFixed(1)}h</p>
           </div>
-          <div className="text-center p-3 rounded-lg bg-primary/5">
-            <p className="text-sm text-muted-foreground">Máximo</p>
-            <p className="text-xl font-bold">{Math.max(...currentData.map(d => d.total)).toFixed(1)}h</p>
+          <div className="text-center p-2 sm:p-3 rounded-lg bg-primary/5">
+            <p className="text-xs sm:text-sm text-muted-foreground">Máximo</p>
+            <p className="text-lg sm:text-xl font-bold">{Math.max(...currentData.map(d => d.total)).toFixed(1)}h</p>
           </div>
-          <div className="text-center p-3 rounded-lg bg-primary/5">
-            <p className="text-sm text-muted-foreground">Períodos</p>
-            <p className="text-xl font-bold">{currentData.length}</p>
+          <div className="text-center p-2 sm:p-3 rounded-lg bg-primary/5">
+            <p className="text-xs sm:text-sm text-muted-foreground">Períodos</p>
+            <p className="text-lg sm:text-xl font-bold">{currentData.length}</p>
           </div>
         </div>
       </CardContent>
