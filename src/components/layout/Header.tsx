@@ -11,7 +11,7 @@ export const Header = () => {
       <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-3">
-            <SidebarTrigger className="hover:bg-primary/10 h-8 w-8 sm:h-9 sm:w-9" />
+            <SidebarTrigger className="hover:bg-primary/10 h-8 w-8 sm:h-9 sm:w-9 bg-primary/5 border border-primary/20 rounded-lg" />
           </div>
 
           <Button 
